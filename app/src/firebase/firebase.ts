@@ -1,15 +1,7 @@
 import { FirebaseApp, initializeApp } from "firebase/app"
-import { Auth, connectAuthEmulator, getAuth } from "firebase/auth"
-import {
-  Firestore,
-  connectFirestoreEmulator,
-  getFirestore,
-} from "firebase/firestore"
-import {
-  Functions,
-  connectFunctionsEmulator,
-  getFunctions,
-} from "firebase/functions"
+import { Auth, getAuth } from "firebase/auth"
+import { Firestore, getFirestore } from "firebase/firestore"
+import { Functions, getFunctions } from "firebase/functions"
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -27,12 +19,12 @@ const modules = (() => {
     const firestore = getFirestore(app)
     const functions = getFunctions(app)
 
-    if (process.env.NODE_ENV !== "production") {
-      const currentHost = window.location.hostname
-      connectAuthEmulator(auth, `http://${currentHost}:9099`)
-      connectFirestoreEmulator(firestore, currentHost, 8080)
-      connectFunctionsEmulator(functions, currentHost, 5001)
-    }
+    // if (process.env.NODE_ENV !== "production") {
+    //   const currentHost = window.location.hostname
+    //   connectAuthEmulator(auth, `http://${currentHost}:9099`)
+    //   connectFirestoreEmulator(firestore, currentHost, 8080)
+    //   connectFunctionsEmulator(functions, currentHost, 5001)
+    // }
 
     return {
       app,

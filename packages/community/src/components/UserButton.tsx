@@ -64,7 +64,7 @@ export const UserButton = observer(() => {
   const onClickSignOut = async () => {
     await auth.signOut()
   }
-  if (authUser === null) {
+  if (!authUser) {
     return (
       <Tab onClick={onClickSignIn}>
         <AccountCircle style={IconStyle} />

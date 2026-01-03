@@ -9,9 +9,14 @@ import { defaultTheme } from "../theme/Theme.js"
 import { GlobalCSS } from "./GlobalCSS.js"
 import { RootView } from "./RootView.js"
 
+const rootStore = new RootStore()
+
+console.log("Community App Loaded!")
+window.alert("Community App Loaded!")
+
 export const App: FC = () => {
   return (
-    <StoreContext.Provider value={new RootStore()}>
+    <StoreContext.Provider value={rootStore}>
       <ThemeProvider theme={defaultTheme}>
         <HelmetProvider>
           <ToastProvider component={Toast}>
