@@ -11,9 +11,6 @@ import { RootView } from "./RootView.js"
 
 const rootStore = new RootStore()
 
-console.log("Community App Loaded!")
-window.alert("Community App Loaded!")
-
 export const App: FC = () => {
   return (
     <StoreContext.Provider value={rootStore}>
