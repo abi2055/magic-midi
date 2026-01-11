@@ -10,6 +10,7 @@ import { ActionDialog } from "../../components/Dialog/ActionDialog"
 import { isRunningInElectron } from "../../helpers/platform"
 import { ArrangeViewProvider } from "../../hooks/useArrangeView"
 import { AuthProvider } from "../../hooks/useAuth"
+import { GeminiStoreProvider } from "../../hooks/useGeminiStore"
 import { PianoRollProvider } from "../../hooks/usePianoRoll"
 import { StoreContext } from "../../hooks/useStores"
 import { TempoEditorProvider } from "../../hooks/useTempoEditor"
@@ -44,7 +45,9 @@ export function App() {
                               {isRunningInElectron() && (
                                 <ElectronCallbackHandler />
                               )}
-                              <RootView />
+                              <GeminiStoreProvider>
+                                <RootView />
+                              </GeminiStoreProvider>
                             </TempoEditorProvider>
                           </ArrangeViewProvider>
                         </PianoRollProvider>

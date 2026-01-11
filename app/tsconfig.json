@@ -27,5 +27,5 @@
       "@types/react": ["../node_modules/@types/react"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/hooks/useGeminiStore.tsx"]
 }
