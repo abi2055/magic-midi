@@ -12,6 +12,7 @@ import { Beats } from "../../GLNodes/Beats"
 import { Cursor } from "../../GLNodes/Cursor"
 import { useNoteMouseGesture } from "../MouseHandler/useNoteMouseGesture"
 import { PianoSelectionContextMenu } from "../PianoSelectionContextMenu"
+import { GeminiSuggestions } from "./GeminiSuggestions"
 import { GhostNotes } from "./GhostNotes"
 import { Lines } from "./Lines"
 import { Notes } from "./Notes"
@@ -109,6 +110,7 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
           {ghostTrackIds.map((trackId) => (
             <GhostNotes key={trackId} trackId={trackId} zIndex={2} />
           ))}
+          <GeminiSuggestions zIndex={2.5} />
           <Notes zIndex={3} />
           <NoteSelection zIndex={4} />
         </Transform>
