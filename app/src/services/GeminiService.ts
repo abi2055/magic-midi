@@ -1,11 +1,12 @@
 import { GoogleGenAI } from "@google/genai"
-import "dotenv/config"
 
-console.log("GEMINI_API_KEY present?", !!process.env.GEMINI_API_KEY)
-console.log("GOOGLE_API_KEY present?", !!process.env.GOOGLE_API_KEY)
+// @ts-expect-error: vite types are missing
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY
+
+console.log("GEMINI_API_KEY present?", !!API_KEY)
 
 // The client gets the API key from the environment variable `GEMINI_API_KEY`.
-const ai = new GoogleGenAI({})
+const ai = new GoogleGenAI({ apiKey: API_KEY })
 
 export const fetchGeminiSuggestions = async (currentNotes: any[]) => {
   const model = "gemini-3-flash-preview"
