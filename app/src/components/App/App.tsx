@@ -10,7 +10,7 @@ import { ActionDialog } from "../../components/Dialog/ActionDialog"
 import { isRunningInElectron } from "../../helpers/platform"
 import { ArrangeViewProvider } from "../../hooks/useArrangeView"
 import { AuthProvider } from "../../hooks/useAuth"
-import { GeminiStoreProvider, useGeminiStore } from "../../hooks/useGeminiStore"
+import { GeminiStoreProvider } from "../../hooks/useGeminiStore"
 import { PianoRollProvider } from "../../hooks/usePianoRoll"
 import { StoreContext } from "../../hooks/useStores"
 import { TempoEditorProvider } from "../../hooks/useTempoEditor"
@@ -26,27 +26,27 @@ import { LocalizationProvider } from "./LocalizationProvider"
 
 const rootStore = new RootStore()
 
-const GeminiTestSpy = () => {
-  const { setSuggestions } = useGeminiStore()
+// const GeminiTestSpy = () => {
+//   const { setSuggestions } = useGeminiStore()
   
-  React.useEffect(() => {
-    console.log("Spy is active. Waiting 1 second...")
+//   React.useEffect(() => {
+//     console.log("Spy is active. Waiting 1 second...")
 
-    const timer = setTimeout(() => {
-      console.log("Spy Injecting Test Note")
-      setSuggestions([{
-        noteNumber: 64,
-        tick: 0,
-        duration: 200,
-        velocity: 100
-      }])
-    }, 1000)
+//     const timer = setTimeout(() => {
+//       console.log("Spy Injecting Test Note")
+//       setSuggestions([{
+//         noteNumber: 64,
+//         tick: 0,
+//         duration: 200,
+//         velocity: 100
+//       }])
+//     }, 1000)
 
-    return () => clearTimeout(timer)
-  }, [setSuggestions])
+//     return () => clearTimeout(timer)
+//   }, [setSuggestions])
   
-  return null
-}
+//   return null
+// }
 
 export function App() {
   return (
@@ -68,7 +68,6 @@ export function App() {
                                 <ElectronCallbackHandler />
                               )}
                               <GeminiStoreProvider>
-                                <GeminiTestSpy />
                                 <RootView />
                               </GeminiStoreProvider>
                             </TempoEditorProvider>

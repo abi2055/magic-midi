@@ -1,58 +1,44 @@
-import { GLFallback } from "@ryohey/webgl-react"
-import { FC, useMemo } from "react"
+import { NoteEvent } from "@signal-app/core"
+import { FC } from "react"
 import { useGeminiStore } from "../../../hooks/useGeminiStore"
-import { NoteRectangles } from "./NoteRectangles"
+import { usePianoRoll } from "../../../hooks/usePianoRoll"
 
-// const PURPLE_COLOR: any = [0.53, 0.37, 0.81, 0.8] 
-
-const Layout = {
-  keyHeight: 16,
-  pixelsPerTick: 0.1,
-}
-const maxNoteNumber = 127
-
-// const WHITE_COLOR: any = [1, 1, 1, 1]
-const GHOST_COLOR: any = [0.53, 0.37, 0.81, 0.6] // Purple with 60% opacity
-
-export interface GeminiSuggestionsProps {
-  zIndex: number
-}
-
-export const GeminiSuggestions: FC<GeminiSuggestionsProps> = (props) => {
-  return (
-    <GLFallback
-      component={_GeminiSuggestions}
-      fallback={() => null}
-      {...props}
-    />
-  )
-}
-
-const _GeminiSuggestions: FC<GeminiSuggestionsProps> = ({ zIndex }) => {
+export const GeminiSuggestions: FC = () => {
   const { suggestions } = useGeminiStore()
+  const { transform } = usePianoRoll()
 
-  console.log("Gemini Suggestions is Drawing: ", suggestions.length, "rects")
-
-  const rects = useMemo(() => {
-    return suggestions.map((note, index) => ({
-      id: index,
-      x: note.tick,
-      y: (maxNoteNumber - note.noteNumber) * Layout.keyHeight,
-      width: note.duration,
-      height: Layout.keyHeight,
-      velocity: note.velocity ?? 100,
-      isSelected: false
-    }))
-  }, [suggestions])
+  if (suggestions.length === 0) return null
 
   return (
-    <NoteRectangles 
-      rects={rects} 
-      zIndex={zIndex} 
-      strokeColor={GHOST_COLOR}
-      inactiveColor={GHOST_COLOR}
-      activeColor={GHOST_COLOR}
-      selectedColor={GHOST_COLOR} 
-    />
+    // Render a container with z-index to ensure it sits ON TOP of the grid
+    <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 999, pointerEvents: "none" }}>
+      {suggestions.map((note, i) => {
+        // Calculate position
+        const rect = transform.getRect({
+          tick: note.tick,
+          noteNumber: note.noteNumber,
+          duration: note.duration,
+          // Dummy values to satisfy TypeScript
+          id: -1, velocity: 100, type: "channel", subtype: "note"
+        } as NoteEvent)
+
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: rect.x,
+              top: rect.y,
+              width: rect.width,
+              height: rect.height,
+              backgroundColor: "rgba(136, 96, 208, 0.6)", // Ghost Purple
+              border: "2px solid #8860D0",
+              borderRadius: 4,
+              boxSizing: "border-box"
+            }}
+          />
+        )
+      })}
+    </div>
   )
 }

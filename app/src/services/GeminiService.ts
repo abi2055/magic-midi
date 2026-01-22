@@ -20,14 +20,18 @@ export const fetchGeminiSuggestions = async (currentNotes: any[]) => {
     .join("\n")
 
   const prompt = `
-    I am a MIDI composer assistant. Here is the current melody:
+    I am a MIDI composer assistant. Here is the current musical context:
     ${noteString}
 
-    Please continue this melody with 4-8 new notes.
+    Please continue this with 2-4 bars of music (melody AND harmony).
+    - You can create CHORDS by outputting multiple notes with the same 'tick' value.
+    - Generate between 8-16 notes total.
+    
     Respond ONLY with a JSON array of notes. 
     Format: [{"noteNumber": 60, "tick": 480, "duration": 480, "velocity": 100}]
     Do not write any markdown or explanation. Just the JSON.
   `
+
   try {
     // Api Call
     const response = await ai.models.generateContent({
