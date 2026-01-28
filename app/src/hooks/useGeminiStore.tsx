@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useCallback, useContext, useState } from "react"
+import React, { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react"
 
 // The structure of a Gemini note
 export interface GeminiNote {
@@ -29,12 +29,12 @@ export const GeminiStoreProvider: React.FC<{ children: ReactNode }> = ({ childre
     setSuggestionsState([])
   }, [])
 
-  const value = {
+  const value = useMemo(() => ({
     suggestions,
     setSuggestions,
     clearSuggestions,
     hasSuggestions: suggestions.length > 0,
-  }
+  }), [suggestions, setSuggestions, clearSuggestions])
 
   return (
     <GeminiStoreContext.Provider value={value}>

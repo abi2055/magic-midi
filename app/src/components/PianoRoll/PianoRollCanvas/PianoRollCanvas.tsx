@@ -76,26 +76,29 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
         e.preventDefault()
         console.log("Tab pressed - inserting Gemini suggestion")
 
-        suggestions.forEach((ghost) => {
-          const noteNumber = Math.floor(Number(ghost.noteNumber))
-          const tick = Math.floor(Number(ghost.tick))
-          const duration = Math.floor(Number(ghost.duration))
-          const velocity = ghost.velocity ?? 127
+        try {
+          suggestions.forEach((ghost) => {
+            const noteNumber = Math.floor(Number(ghost.noteNumber))
+            const tick = Math.floor(Number(ghost.tick))
+            const duration = Math.floor(Number(ghost.duration))
+            const velocity = ghost.velocity ?? 127
 
-          addEvent({
-            type: "channel",
-            subtype: "note",
-            noteNumber: noteNumber,
-            tick: tick,
-            duration: duration,
-            velocity: velocity,
-          } as NoteEvent)
-        })
-
-        setTimeout(() => {
-          console.log("Clearing Gemini suggestions after insertion")
-          clearSuggestions()
-        }, 10)
+            addEvent({
+              type: "channel",
+              subtype: "note",
+              noteNumber: noteNumber,
+              tick: tick,
+              duration: duration,
+              velocity: velocity,
+            } as NoteEvent)
+          })
+        }
+        finally {
+          setTimeout(() => {
+            console.log("Clearing Gemini suggestions after insertion")
+            clearSuggestions()
+          }, 0)
+        }
       }
     }
 
@@ -127,7 +130,7 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
   )
 
   return (
-    <>
+    <div style={{ position: "relative", width: width, height: height, overflow: "hidden" }}>
       <GLCanvas
         width={width}
         height={height}
@@ -155,6 +158,6 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
       </GLCanvas>
       <GeminiSuggestions />
       <PianoSelectionContextMenu {...menuProps} />
-    </>
+    </div>
   )
 }

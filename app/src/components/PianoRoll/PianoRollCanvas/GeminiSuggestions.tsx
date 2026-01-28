@@ -1,24 +1,39 @@
-import { NoteEvent } from "@signal-app/core"
-import { FC } from "react"
-import { useGeminiStore } from "../../../hooks/useGeminiStore"
-import { usePianoRoll } from "../../../hooks/usePianoRoll"
+import { NoteEvent } from "@signal-app/core";
+import { FC } from "react";
+import { useGeminiStore } from "../../../hooks/useGeminiStore";
+import { useKeyScroll } from "../../../hooks/useKeyScroll";
+import { usePianoRoll } from "../../../hooks/usePianoRoll";
+import { useTickScroll } from "../../../hooks/useTickScroll";
 
 export const GeminiSuggestions: FC = () => {
   const { suggestions } = useGeminiStore()
   const { transform } = usePianoRoll()
+  
+  const { scrollLeft } = useTickScroll()
+  const { scrollTop } = useKeyScroll()
 
   if (suggestions.length === 0) return null
 
   return (
-    // Render a container with z-index to ensure it sits ON TOP of the grid
-    <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 999, pointerEvents: "none" }}>
+    // makes the HTML overlay match the WebGL Canvas exactly.
+    <div 
+      style={{ 
+        position: "absolute", 
+        top: 0, 
+        left: 0, 
+        width: "100%", 
+        height: "100%", 
+        pointerEvents: "none", 
+        zIndex: 999,           
+        transform: `translate(${-scrollLeft}px, ${-scrollTop}px)` 
+      }}
+    >
       {suggestions.map((note, i) => {
-        // Calculate position
+        // Calculate World Coordinates
         const rect = transform.getRect({
           tick: note.tick,
           noteNumber: note.noteNumber,
           duration: note.duration,
-          // Dummy values to satisfy TypeScript
           id: -1, velocity: 100, type: "channel", subtype: "note"
         } as NoteEvent)
 
@@ -31,9 +46,9 @@ export const GeminiSuggestions: FC = () => {
               top: rect.y,
               width: rect.width,
               height: rect.height,
-              backgroundColor: "rgba(136, 96, 208, 0.6)", // Ghost Purple
-              border: "2px solid #8860D0",
-              borderRadius: 4,
+              backgroundColor: "rgba(136, 96, 208, 0.5)", // Gemini Purple
+              border: "1px solid #8860D0",
+              borderRadius: 2,
               boxSizing: "border-box"
             }}
           />

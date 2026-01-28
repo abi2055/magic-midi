@@ -11,9 +11,7 @@ export function useNoteColor() {
   const theme = useTheme()
 
   const baseColor = Color(
-    trackColor !== undefined
-      ? trackColorToCSSColor(trackColor)
-      : theme.themeColor,
+    trackColor !== undefined ? trackColorToCSSColor(trackColor) : "#baa7a7ff",
   )
 
   return {
