@@ -11,6 +11,7 @@ export interface GeminiNote {
 // The context type for the Gemini store
 interface GeminiStoreContextType {
   suggestions: GeminiNote[]
+  reasoning: string | null
   setSuggestions: (notes: GeminiNote[], reasoning: string) => void
   clearSuggestions: () => void
   hasSuggestions: boolean
