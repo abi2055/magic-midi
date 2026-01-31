@@ -33,7 +33,7 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
   const { suggestions, clearSuggestions } = useGeminiStore()
   const { selectedTrackId } = usePianoRoll()
   const { addEvent } = useTrack(selectedTrackId)
-  console.log("Current Gemini Suggestions:", suggestions);
+  // console.log("Current Gemini Suggestions:", suggestions);
 
   const { ghostTrackIds, mouseMode } = usePianoRoll()
   const beats = useBeats()
@@ -77,7 +77,7 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
         console.log("Tab pressed - inserting Gemini suggestion")
 
         try {
-          suggestions.forEach((ghost) => {
+          suggestions.forEach((ghost: any) => {
             const noteNumber = Math.floor(Number(ghost.noteNumber))
             const tick = Math.floor(Number(ghost.tick))
             const duration = Math.floor(Number(ghost.duration))
@@ -99,6 +99,12 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
             clearSuggestions()
           }, 0)
         }
+      }
+
+      if (e.code === "Escape" && suggestions.length > 0) {
+          e.preventDefault()
+          console.log("Escape pressed - clearing Gemini suggestions")
+          clearSuggestions()  
       }
     }
 
@@ -137,9 +143,15 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
         cursor={mouseMode === "pencil" ? "auto" : "crosshair"}
         style={style}
         onContextMenu={handleContextMenu}
-        onMouseDown={mouseHandler.onMouseDown}
+        onMouseDown={(e) => {
+          if (suggestions.length > 0) {
+            clearSuggestions()
+          }
+          mouseHandler.onMouseDown(e)
+        }}
         onMouseMove={mouseHandler.onMouseMove}
         onMouseUp={mouseHandler.onMouseUp}
+
       >
         <Transform matrix={scrollYMatrix}>
           <Lines zIndex={0} />
