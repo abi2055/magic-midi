@@ -1,5 +1,5 @@
 import { NoteEvent } from "@signal-app/core";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useGeminiStore } from "../../../hooks/useGeminiStore";
 import { useKeyScroll } from "../../../hooks/useKeyScroll";
 import { usePianoRoll } from "../../../hooks/usePianoRoll";
@@ -8,13 +8,20 @@ import { useTickScroll } from "../../../hooks/useTickScroll";
 export const GeminiSuggestions: FC = () => {
   const { suggestions, reasoning } = useGeminiStore()
   const { transform } = usePianoRoll()
-  
   const { scrollLeft } = useTickScroll()
   const { scrollTop } = useKeyScroll()
 
+  const [showInsight, setShowInsight] = useState(true);
+
+  useEffect(() => {
+    if (reasoning) {
+      setShowInsight(true);
+    }
+  }, [reasoning]);
+
   if (suggestions.length === 0) return null
 
-  const firstNote = suggestions[0]
+  const firstNote = suggestions[suggestions.length - 1];
   const firstRect = transform.getRect({
     tick: firstNote.tick,
     noteNumber: firstNote.noteNumber,
@@ -67,55 +74,88 @@ export const GeminiSuggestions: FC = () => {
           />
         )
       })}
-      {reasoning && (
+      {reasoning && showInsight && (
         <div
           style={{
             position: "absolute",
-            left: firstRect.x, 
-            top: firstRect.y - 80, // Float 80px above the first note
+            // Moved to the Right (+200px) and Up (-50px) to clear the notes
+            left: firstRect.x + 200, 
+            top: firstRect.y - 50, 
             width: "280px",
-            backgroundColor: "rgba(20, 20, 30, 0.95)", // Dark background
-            border: "1px solid #8860D0", // Purple Border
+            backgroundColor: "rgba(20, 20, 30, 0.95)",
+            border: "1px solid #8860D0",
             borderRadius: "8px",
             padding: "12px",
             color: "#E0E0E0",
             fontSize: "13px",
             lineHeight: "1.4",
             fontFamily: "Inter, sans-serif",
-            boxShadow: "0 4px 20px rgba(136, 96, 208, 0.3)", // Glow effect
+            boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
             backdropFilter: "blur(4px)",
-            pointerEvents: "auto", // Allow selecting the text
+            pointerEvents: "auto", // Enable clicking the X
             zIndex: 1000,
           }}
         >
-          {/* Header */}
+          {/* Header Row */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "6px",
-              marginBottom: "6px",
-              color: "#c0a0ff",
-              fontWeight: 700,
-              fontSize: "11px",
-              textTransform: "uppercase",
-              letterSpacing: "0.5px",
+              justifyContent: "space-between", // Pushes X to the right
+              marginBottom: "8px",
             }}
           >
-            <span>✨ Insight</span>
+            <div
+              style={{
+                color: "#c0a0ff",
+                fontWeight: 700,
+                fontSize: "11px",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <span>✨ Insight</span>
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation() // Prevent triggering other clicks
+                setShowInsight(false) // Hide box only
+              }}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#888",
+                cursor: "pointer",
+                padding: "4px",
+                lineHeight: 1,
+                fontSize: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "4px",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#888")}
+            >
+              ✕
+            </button>
           </div>
 
-          {/* The AI's Text */}
-          <div>{reasoning}</div>
+          {/* Content */}
+          <div style={{ marginBottom: "8px" }}>{reasoning}</div>
 
-          {/* Footer Instructions */}
+          {/* Footer */}
           <div
             style={{
-              marginTop: "10px",
               paddingTop: "8px",
               borderTop: "1px solid rgba(255,255,255,0.1)",
               fontSize: "10px",
-              color: "#888",
+              color: "#666",
               display: "flex",
               justifyContent: "space-between",
             }}
