@@ -8,28 +8,42 @@ console.log("GEMINI_API_KEY present?", !!API_KEY)
 // The client gets the API key from the environment variable `GEMINI_API_KEY`.
 const ai = new GoogleGenAI({ apiKey: API_KEY })
 
+// interface GeminiResponse {
+//   notes: any[];
+//   explanation: string;
+// }
+
 export const fetchGeminiSuggestions = async (currentNotes: any[]) => {
   const model = "gemini-3-flash-preview"
 
   // First step is to construct the prompt based on current notes
-  const noteString = currentNotes
-    .map(
-      (n) =>
-        `Note: ${n.noteNumber}, Start: ${n.tick}, Duration: ${n.duration}, Velocity: ${n.velocity || 100}`,
-    )
-    .join("\n")
+  const notesContext = JSON.stringify(
+    currentNotes.map((n) => ({
+      noteNumber: n.noteNumber,
+      tick: n.tick,
+      duration: n.duration,
+      velocity: n.velocity,
+    })),
+  )
 
   const prompt = `
-    I am a MIDI composer assistant. Here is the current musical context:
-    ${noteString}
+    You are an expert music theory teacher.
+    Analyze the following MIDI notes (tick, noteNumber, duration, velocity):
+    ${notesContext}
 
-    Please continue this with 2-4 bars of music (melody AND harmony).
-    - You can create CHORDS by outputting multiple notes with the same 'tick' value.
-    - Generate between 8-16 notes total.
+    Your task:
+    1. Continue this melody for 2-4 bars in a matching style.
+    2. Provide a 1-sentence "Teacher's Insight" explaining the theory behind your choice (e.g., scales, intervals, or chord progressions used).
+
+    IMPORTANT: You must return ONLY valid JSON in this exact structure:
+    {
+      "explanation": "Your theory explanation here...",
+      "notes": [
+        { "tick": number, "noteNumber": number, "duration": number, "velocity": number }
+      ]
+    }
     
-    Respond ONLY with a JSON array of notes. 
-    Format: [{"noteNumber": 60, "tick": 480, "duration": 480, "velocity": 100}]
-    Do not write any markdown or explanation. Just the JSON.
+    Do not use Markdown formatting. Just the raw JSON string.
   `
 
   try {
@@ -43,11 +57,18 @@ export const fetchGeminiSuggestions = async (currentNotes: any[]) => {
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim()
-    const newNotes = JSON.parse(cleanText)
-    return newNotes
+    const data = JSON.parse(cleanText)
+
+    return {
+      notes: data.notes || [],
+      explanation: data.explanation || "",
+    }
   } catch (error) {
     console.error("Error fetching Gemini suggestions:", error)
-    return []
+    return {
+      notes: [],
+      explanation: "Could not generate suggestions and reasoning.",
+    }
   }
 }
 

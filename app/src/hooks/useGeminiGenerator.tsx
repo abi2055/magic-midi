@@ -28,12 +28,12 @@ export const useGeminiGenerator = () => {
       
       console.log("Sending context to Gemini:", currentNotes.length, "notes")
 
-      const aiNotes = await fetchGeminiSuggestions(currentNotes)
+      const { notes, explanation }= await fetchGeminiSuggestions(currentNotes as any)
 
-      console.log("Received from Gemini:", aiNotes)
+      console.log("Received from Gemini: ", notes, explanation)
 
-      if (aiNotes.length > 0) {
-        setSuggestions(aiNotes)
+      if (notes.length > 0) {
+        setSuggestions(notes, explanation)
       } else {
         console.warn("Gemini returned 0 notes.")
       }
