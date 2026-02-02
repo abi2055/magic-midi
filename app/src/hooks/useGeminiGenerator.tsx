@@ -7,7 +7,7 @@ import { useSong } from "./useSong";
 export const useGeminiGenerator = () => {
   const { setSuggestions, clearSuggestions } = useGeminiStore()
 
-  const { getTrack } = useSong()
+  const { tracks, getTrack } = useSong()
 
   const { selectedTrackId } = usePianoRoll()
   const [isGenerating, setIsGenerating] = useState(false)
@@ -18,6 +18,7 @@ export const useGeminiGenerator = () => {
     
     try {
       const currentTrack = getTrack(selectedTrackId)
+      if (!currentTrack) return
 
       if (!currentTrack) {
         console.warn("No track selected!")
@@ -25,12 +26,27 @@ export const useGeminiGenerator = () => {
       }
 
       const currentNotes = currentTrack.events.filter(e => (e as any).subtype === "note") || []
+
+      // Looking at all traacks besides the current one
+      const contextTracks = Object.values(tracks)
+        .filter(t => t.id !== selectedTrackId)
+        .map(t => ({
+          nname: t.name || `Track ${t.id}`,
+          // Gemini will translate "0" -> Piano, "32" -> Bass, etc.
+          programNumber: t.programNumber ?? 0, 
+          isRhythm: t.isRhythmTrack, // Help it identify drums
+          notes: t.events.filter(e => e.type === "channel" && e.subtype === "note") || []
+        }))
+        .filter(t => t.notes.length > 0)
       
-      console.log("Sending context to Gemini:", currentNotes.length, "notes")
+      console.log(`Sending Target (${currentNotes.length} notes) + Context (${contextTracks.length} tracks)`)
 
-      const { notes, explanation }= await fetchGeminiSuggestions(currentNotes as any)
+      const { notes, explanation } = await fetchGeminiSuggestions(currentNotes as any, contextTracks as any, currentTrack.programNumber ?? 0)
+      // Expects two arguments the current notes on the track and the context from other tracks
 
-      console.log("Received from Gemini: ", notes, explanation)
+      if (notes.length > 0) {
+        console.log("Received from Gemini: ", notes, explanation)
+      }
 
       if (notes.length > 0) {
         setSuggestions(notes, explanation)
@@ -43,7 +59,7 @@ export const useGeminiGenerator = () => {
     } finally {
       setIsGenerating(false)
     }
-  }, [getTrack, selectedTrackId, setSuggestions, clearSuggestions])
+  }, [tracks, getTrack, selectedTrackId, setSuggestions, clearSuggestions])
 
   return { generateMusic, isGenerating }
 }

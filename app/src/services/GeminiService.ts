@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai"
+// import { NoteEvent } from "../../../packages/core/src/entities"
 
 // @ts-expect-error: vite types are missing
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY
@@ -8,12 +9,23 @@ console.log("GEMINI_API_KEY present?", !!API_KEY)
 // The client gets the API key from the environment variable `GEMINI_API_KEY`.
 const ai = new GoogleGenAI({ apiKey: API_KEY })
 
-// interface GeminiResponse {
-//   notes: any[];
-//   explanation: string;
-// }
+interface GeminiResponse {
+  notes: any[]
+  explanation: string
+}
 
-export const fetchGeminiSuggestions = async (currentNotes: any[]) => {
+interface ContextTrack {
+  name: string
+  programNumber: number
+  isRhythm: boolean
+  notes: any[]
+}
+
+export const fetchGeminiSuggestions = async (
+  currentNotes: any[],
+  contextTracks: ContextTrack[],
+  targetProgramNumber: number,
+): Promise<GeminiResponse> => {
   const model = "gemini-3-flash-preview"
 
   // First step is to construct the prompt based on current notes
@@ -26,24 +38,51 @@ export const fetchGeminiSuggestions = async (currentNotes: any[]) => {
     })),
   )
 
+  const contextJson = JSON.stringify(
+    contextTracks.map((t) => ({
+      id: t.name,
+      instrument: `MIDI Program ${t.programNumber}`,
+      role: t.isRhythm ? "DRUMS/PERCUSSION" : "MELODIC",
+      notes: t.notes.map((n) => ({
+        tick: n.tick,
+        note: n.noteNumber,
+        dur: n.duration,
+      })),
+    })),
+  )
+
   const prompt = `
-    You are an expert music theory teacher.
-    Analyze the following MIDI notes (tick, noteNumber, duration, velocity):
+    You are an expert Music Theory Teacher.
+    
+    CONTEXT (The Band):
+    Here are the other tracks. Use their MIDI Program numbers to understand their role internally, BUT DO NOT REFERENCE PROGRAM NUMBERS IN YOUR EXPLANATION.
+    - Programs 0-7: Piano
+    - Programs 24-31: Guitar
+    - Programs 32-39: Bass
+    - Programs 113-120: Percussion
+    
+    ${contextJson}
+
+    TARGET (Your Instrument):
+    You are writing for MIDI Program ${targetProgramNumber}.
     ${notesContext}
 
-    Your task:
-    1. Continue this melody for 2-4 bars in a matching style.
-    2. Provide a 1-sentence "Teacher's Insight" explaining the theory behind your choice (e.g., scales, intervals, or chord progressions used).
-
-    IMPORTANT: You must return ONLY valid JSON in this exact structure:
-    {
-      "explanation": "Your theory explanation here...",
-      "notes": [
-        { "tick": number, "noteNumber": number, "duration": number, "velocity": number }
-      ]
-    }
+    YOUR TASK:
+    1. Continue the TARGET track for 2-4 bars.
+    2. Sync rhythmically with any Drums/Percussion.
+    3. Match the harmony defined by any Piano/Bass.
     
-    Do not use Markdown formatting. Just the raw JSON string.
+    4. GENERATE "TEACHER'S INSIGHT":
+       - Explain your choice using MUSIC THEORY terms (e.g., "I landed on the Root Note C," "I used a ii-V-I progression," "I synced with the Kick Drum").
+       - 🚫 FORBIDDEN: Do NOT mention "ticks", "velocity values", "program numbers", or "MIDI channels".
+       - ✅ REQUIRED: Mention specific Note Names (e.g. "C#", "G Maj") and Rhythmic Terms (e.g. "on the downbeat", "syncopated").
+       - Tone: Encouraging, educational, and concise (max 2 sentences).
+
+    RETURN JSON ONLY:
+    { 
+      "explanation": "string", 
+      "notes": [...] 
+    }
   `
 
   try {
