@@ -42,7 +42,7 @@ const GeminiButton = styled.button<{ isLoading: boolean }>`
 `
 
 export const PianoRollToolbar: FC = () => {
-  const { generateMusic, isGenerating } = useGeminiGenerator()
+  const { generateMusic, isGenerating, cooldown } = useGeminiGenerator()
   return (
     <Toolbar>
       <TrackListMenuButton />
@@ -61,8 +61,8 @@ export const PianoRollToolbar: FC = () => {
 
       <FlexibleSpacer />
 
-      <GeminiButton onClick={generateMusic} isLoading={isGenerating}>
-        {isGenerating ? "Thinking..." : "✨ Ask Gemini"}
+      <GeminiButton onClick={generateMusic} disabled={isGenerating || cooldown > 0} isLoading={isGenerating}>
+        {isGenerating ? "Thinking..." : cooldown > 0 ? `Wait Cooldown: ${cooldown}s` : "✨ Ask Gemini"}
       </GeminiButton>
 
       <PianoRollToolSelector />

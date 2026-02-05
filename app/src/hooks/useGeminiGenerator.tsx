@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchGeminiSuggestions } from "../services/GeminiService";
 import { useGeminiStore } from "./useGeminiStore";
 import { usePianoRoll } from "./usePianoRoll";
@@ -12,7 +12,21 @@ export const useGeminiGenerator = () => {
   const { selectedTrackId } = usePianoRoll()
   const [isGenerating, setIsGenerating] = useState(false)
 
+  const [cooldown, setCooldown] = useState(0)
+
+  useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [cooldown])
+
   const generateMusic = useCallback(async () => {
+    if (isGenerating || cooldown > 0) {
+      console.warn("Already generating or on cooldown")
+      return
+    }
+
     setIsGenerating(true)
     clearSuggestions()
     
@@ -58,8 +72,9 @@ export const useGeminiGenerator = () => {
       console.error("Failed to generate:", e)
     } finally {
       setIsGenerating(false)
+      setCooldown(5) // 5 second cooldown after each generation
     }
-  }, [tracks, getTrack, selectedTrackId, setSuggestions, clearSuggestions])
+  }, [tracks, getTrack, selectedTrackId, setSuggestions, clearSuggestions, isGenerating, cooldown])
 
-  return { generateMusic, isGenerating }
+  return { generateMusic, isGenerating, cooldown }
 }
