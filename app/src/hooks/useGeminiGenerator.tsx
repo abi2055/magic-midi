@@ -10,7 +10,7 @@ export const useGeminiGenerator = () => {
   const { tracks, getTrack } = useSong()
 
   const { selectedTrackId } = usePianoRoll()
-  const [isGenerating, setIsGenerating] = useState(false)
+  const { isGenerating, setIsGenerating } = useGeminiStore()
 
   const [cooldown, setCooldown] = useState(0)
 
@@ -74,7 +74,7 @@ export const useGeminiGenerator = () => {
       setIsGenerating(false)
       setCooldown(5) // 5 second cooldown after each generation
     }
-  }, [tracks, getTrack, selectedTrackId, setSuggestions, clearSuggestions, isGenerating, cooldown])
+  }, [tracks, getTrack, selectedTrackId, setSuggestions, clearSuggestions, isGenerating, cooldown, setIsGenerating])
 
   return { generateMusic, isGenerating, cooldown }
 }

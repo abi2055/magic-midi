@@ -5,6 +5,7 @@ import { FC, MouseEventHandler, useCallback, useEffect, useMemo } from "react"
 import { matrixFromTranslation } from "../../../helpers/matrix"
 import { useBeats } from "../../../hooks/useBeats"
 import { useContextMenu } from "../../../hooks/useContextMenu"
+// import { useGeminiGenerator } from "../../../hooks/useGeminiGenerator"
 import { useGeminiStore } from "../../../hooks/useGeminiStore"
 import { useKeyScroll } from "../../../hooks/useKeyScroll"
 import { usePianoRoll } from "../../../hooks/usePianoRoll"
@@ -12,6 +13,7 @@ import { useTickScroll } from "../../../hooks/useTickScroll"
 import { useTrack } from "../../../hooks/useTrack"
 import { Beats } from "../../GLNodes/Beats"
 import { Cursor } from "../../GLNodes/Cursor"
+import { LoadingOverlay } from "../../LoadingOverlay"
 import { useNoteMouseGesture } from "../MouseHandler/useNoteMouseGesture"
 import { PianoSelectionContextMenu } from "../PianoSelectionContextMenu"
 import { GeminiSuggestions } from "./GeminiSuggestions"
@@ -19,7 +21,6 @@ import { GhostNotes } from "./GhostNotes"
 import { Lines } from "./Lines"
 import { Notes } from "./Notes"
 import { NoteSelection } from "./NoteSelection"
-
 
 export interface PianoRollCanvasProps {
   width: number
@@ -30,7 +31,7 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
   width,
   height,
 }) => {
-  const { suggestions, clearSuggestions } = useGeminiStore()
+  const { suggestions, clearSuggestions, isGenerating } = useGeminiStore()
   const { selectedTrackId } = usePianoRoll()
   const { addEvent } = useTrack(selectedTrackId)
   // console.log("Current Gemini Suggestions:", suggestions);
@@ -43,6 +44,8 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
   const mouseHandler = useNoteMouseGesture()
 
   const { onContextMenu, menuProps } = useContextMenu()
+
+  // const { isGenerating } = useGeminiGenerator()
 
   const theme = useTheme()
 
@@ -170,6 +173,7 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
       </GLCanvas>
       <GeminiSuggestions />
       <PianoSelectionContextMenu {...menuProps} />
+      <LoadingOverlay isVisible={isGenerating} />
     </div>
   )
 }

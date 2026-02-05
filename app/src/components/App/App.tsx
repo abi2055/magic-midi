@@ -26,28 +26,6 @@ import { LocalizationProvider } from "./LocalizationProvider"
 
 const rootStore = new RootStore()
 
-// const GeminiTestSpy = () => {
-//   const { setSuggestions } = useGeminiStore()
-  
-//   React.useEffect(() => {
-//     console.log("Spy is active. Waiting 1 second...")
-
-//     const timer = setTimeout(() => {
-//       console.log("Spy Injecting Test Note")
-//       setSuggestions([{
-//         noteNumber: 64,
-//         tick: 0,
-//         duration: 200,
-//         velocity: 100
-//       }])
-//     }, 1000)
-
-//     return () => clearTimeout(timer)
-//   }, [setSuggestions])
-  
-//   return null
-// }
-
 export function App() {
   return (
     <React.StrictMode>
