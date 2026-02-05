@@ -74,8 +74,8 @@ export const fetchGeminiSuggestions = async (
     
     4. GENERATE "TEACHER'S INSIGHT":
        - Explain your choice using MUSIC THEORY terms (e.g., "I landed on the Root Note C," "I used a ii-V-I progression," "I synced with the Kick Drum").
-       - 🚫 FORBIDDEN: Do NOT mention "ticks", "velocity values", "program numbers", or "MIDI channels".
-       - ✅ REQUIRED: Mention specific Note Names (e.g. "C#", "G Maj") and Rhythmic Terms (e.g. "on the downbeat", "syncopated").
+       - FORBIDDEN: Do NOT mention "ticks", "velocity values", "program numbers", or "MIDI channels".
+       - REQUIRED: Mention specific Note Names (e.g. "C#", "G Maj") and Rhythmic Terms (e.g. "on the downbeat", "syncopated").
        - Tone: Encouraging, educational, and concise (max 2 sentences).
 
     RETURN JSON ONLY:
