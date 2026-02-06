@@ -42,20 +42,6 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isVisible }) => 
         Composing...
       </h2>
 
-      {/* 3. THE TIP
-      <p style={{
-        fontFamily: "Inter, sans-serif",
-        fontSize: "14px",
-        color: "#c0a0ff",
-        maxWidth: "400px",
-        textAlign: "center",
-        lineHeight: "1.5",
-        fontStyle: "italic",
-        animation: "fadeIn 0.5s ease-in-out"
-      }}>
-        Composing...
-      </p> */}
-
       {/* Spinner Animation */}
       <style>{`
         .gemini-spinner {

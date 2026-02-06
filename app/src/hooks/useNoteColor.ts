@@ -12,6 +12,7 @@ export function useNoteColor() {
 
   const baseColor = Color(
     trackColor !== undefined ? trackColorToCSSColor(trackColor) : "#a69ed6ff",
+    // adding a custom blue color to compliment the existing "gemini pallete"
   )
 
   return {

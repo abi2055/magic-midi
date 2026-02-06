@@ -46,7 +46,6 @@ export const useGeminiGenerator = () => {
         .filter(t => t.id !== selectedTrackId)
         .map(t => ({
           nname: t.name || `Track ${t.id}`,
-          // Gemini will translate "0" -> Piano, "32" -> Bass, etc.
           programNumber: t.programNumber ?? 0, 
           isRhythm: t.isRhythmTrack, // Help it identify drums
           notes: t.events.filter(e => e.type === "channel" && e.subtype === "note") || []

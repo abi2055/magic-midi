@@ -25,6 +25,7 @@ const GeminiStoreContext = createContext<GeminiStoreContextType | null>(null)
 
 export const GeminiStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [suggestions, setSuggestionsState] = useState<GeminiNote[]>([])
+  // Using the interface defined above, suggestions are of type GeminiNote[]
   const [reasoning, setReasoningState] = useState<string | null>(null)
 
   const [isGenerating, setIsGenerating] = useState<boolean>(false);

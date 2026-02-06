@@ -54,3 +54,5 @@ export const Toast: React.FC<ToastProps> = ({ message, onClose, type = "error" }
     </div>
   );
 };
+
+// Toast pop up on api errors specifically in place for error 503 from Gemini API

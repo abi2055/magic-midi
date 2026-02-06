@@ -97,6 +97,7 @@ export const fetchGeminiSuggestions = async (
       .replace(/```/g, "")
       .trim()
     const data = JSON.parse(cleanText)
+    // cleanup
 
     return {
       notes: data.notes || [],
@@ -110,13 +111,3 @@ export const fetchGeminiSuggestions = async (
     }
   }
 }
-
-// async function main() {
-//   const response = await ai.models.generateContent({
-//     model: "gemini-3-flash-preview",
-//     contents: "Explain how AI works in a few words",
-//   })
-//   console.log(response.text)
-// }
-
-// main()

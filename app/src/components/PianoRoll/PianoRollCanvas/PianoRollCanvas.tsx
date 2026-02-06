@@ -5,7 +5,6 @@ import { FC, MouseEventHandler, useCallback, useEffect, useMemo } from "react"
 import { matrixFromTranslation } from "../../../helpers/matrix"
 import { useBeats } from "../../../hooks/useBeats"
 import { useContextMenu } from "../../../hooks/useContextMenu"
-// import { useGeminiGenerator } from "../../../hooks/useGeminiGenerator"
 import { useGeminiStore } from "../../../hooks/useGeminiStore"
 import { useKeyScroll } from "../../../hooks/useKeyScroll"
 import { usePianoRoll } from "../../../hooks/usePianoRoll"
@@ -35,7 +34,6 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
   const { suggestions, clearSuggestions, isGenerating, errorMessage, setErrorMessage } = useGeminiStore()
   const { selectedTrackId } = usePianoRoll()
   const { addEvent } = useTrack(selectedTrackId)
-  // console.log("Current Gemini Suggestions:", suggestions);
 
   const { ghostTrackIds, mouseMode } = usePianoRoll()
   const beats = useBeats()
