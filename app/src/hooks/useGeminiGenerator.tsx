@@ -5,12 +5,11 @@ import { usePianoRoll } from "./usePianoRoll";
 import { useSong } from "./useSong";
 
 export const useGeminiGenerator = () => {
-  const { setSuggestions, clearSuggestions } = useGeminiStore()
+  const { setSuggestions, clearSuggestions, isGenerating, setIsGenerating, setErrorMessage } = useGeminiStore()
 
   const { tracks, getTrack } = useSong()
 
   const { selectedTrackId } = usePianoRoll()
-  const { isGenerating, setIsGenerating } = useGeminiStore()
 
   const [cooldown, setCooldown] = useState(0)
 
@@ -28,6 +27,7 @@ export const useGeminiGenerator = () => {
     }
 
     setIsGenerating(true)
+    setErrorMessage(null)
     clearSuggestions()
     
     try {
@@ -53,7 +53,7 @@ export const useGeminiGenerator = () => {
         }))
         .filter(t => t.notes.length > 0)
       
-      console.log(`Sending Target (${currentNotes.length} notes) + Context (${contextTracks.length} tracks)`)
+      console.log(`Sending Notes (${currentNotes.length} notes) + Context (${contextTracks.length} tracks)`)
 
       const { notes, explanation } = await fetchGeminiSuggestions(currentNotes as any, contextTracks as any, currentTrack.programNumber ?? 0)
       // Expects two arguments the current notes on the track and the context from other tracks
@@ -65,16 +65,24 @@ export const useGeminiGenerator = () => {
       if (notes.length > 0) {
         setSuggestions(notes, explanation)
       } else {
-        console.warn("Gemini returned 0 notes.")
+        console.warn("Gemini returned no suggestions.")
       }
       
     } catch (e) {
-      console.error("Failed to generate:", e)
+      console.error(e)
+
+      if (e instanceof Error) {
+        setErrorMessage(e.message)
+      }
+      else {
+        setErrorMessage("An unknown error occurred while generating music.")
+      }
+      
     } finally {
       setIsGenerating(false)
       setCooldown(5) // 5 second cooldown after each generation
     }
-  }, [tracks, getTrack, selectedTrackId, setSuggestions, clearSuggestions, isGenerating, cooldown, setIsGenerating])
+  }, [tracks, getTrack, selectedTrackId, setSuggestions, clearSuggestions, isGenerating, cooldown, setIsGenerating, setErrorMessage])
 
-  return { generateMusic, isGenerating, cooldown }
+  return { generateMusic, isGenerating, cooldown}
 }

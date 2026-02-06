@@ -15,8 +15,10 @@ interface GeminiStoreContextType {
   setSuggestions: (notes: GeminiNote[], reasoning: string) => void
   clearSuggestions: () => void
   hasSuggestions: boolean
-  isGenerating: boolean;
-  setIsGenerating: (val: boolean) => void;
+  isGenerating: boolean
+  setIsGenerating: (val: boolean) => void
+  errorMessage?: string | null
+  setErrorMessage: (msg: string | null) => void
 }
 
 const GeminiStoreContext = createContext<GeminiStoreContextType | null>(null)
@@ -26,6 +28,7 @@ export const GeminiStoreProvider: React.FC<{ children: ReactNode }> = ({ childre
   const [reasoning, setReasoningState] = useState<string | null>(null)
 
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const setSuggestions = useCallback((notes: GeminiNote[], newReasoning: string) => {
     setSuggestionsState(notes)
@@ -45,7 +48,9 @@ export const GeminiStoreProvider: React.FC<{ children: ReactNode }> = ({ childre
     hasSuggestions: suggestions.length > 0,
     isGenerating,
     setIsGenerating,
-  }), [suggestions, setSuggestions, clearSuggestions, reasoning, isGenerating])
+    errorMessage,
+    setErrorMessage
+  }), [suggestions, setSuggestions, clearSuggestions, reasoning, isGenerating, errorMessage])
 
   return (
     <GeminiStoreContext.Provider value={value}>

@@ -14,6 +14,7 @@ import { useTrack } from "../../../hooks/useTrack"
 import { Beats } from "../../GLNodes/Beats"
 import { Cursor } from "../../GLNodes/Cursor"
 import { LoadingOverlay } from "../../LoadingOverlay"
+import { Toast } from "../../Toast"
 import { useNoteMouseGesture } from "../MouseHandler/useNoteMouseGesture"
 import { PianoSelectionContextMenu } from "../PianoSelectionContextMenu"
 import { GeminiSuggestions } from "./GeminiSuggestions"
@@ -31,7 +32,7 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
   width,
   height,
 }) => {
-  const { suggestions, clearSuggestions, isGenerating } = useGeminiStore()
+  const { suggestions, clearSuggestions, isGenerating, errorMessage, setErrorMessage } = useGeminiStore()
   const { selectedTrackId } = usePianoRoll()
   const { addEvent } = useTrack(selectedTrackId)
   // console.log("Current Gemini Suggestions:", suggestions);
@@ -44,8 +45,6 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
   const mouseHandler = useNoteMouseGesture()
 
   const { onContextMenu, menuProps } = useContextMenu()
-
-  // const { isGenerating } = useGeminiGenerator()
 
   const theme = useTheme()
 
@@ -174,6 +173,10 @@ export const PianoRollCanvas: FC<PianoRollCanvasProps> = ({
       <GeminiSuggestions />
       <PianoSelectionContextMenu {...menuProps} />
       <LoadingOverlay isVisible={isGenerating} />
+      <Toast 
+        message={errorMessage ?? null}
+        onClose={() => setErrorMessage(null)}
+      />
     </div>
   )
 }
