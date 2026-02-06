@@ -58,6 +58,10 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         react: path.resolve("../node_modules/react"),
+        "@signal-app/community": path.resolve(
+          __dirname,
+          "../packages/community/src/index.tsx",
+        ),
       },
     },
     envDir: "..",
