@@ -34,7 +34,7 @@
       "source": "/_next/:path*",
       "destination": "https://signalmidi.vercel.app/_next/:path*"
     },
-    { "source": "/edit", "destination": "/edit.html" },
+    { "source": "/edit", "destination": "/index.html" },
     { "source": "/auth", "destination": "/auth.html" },
     { "source": "/profile", "destination": "/community.html" },
     { "source": "/home", "destination": "/community.html" },
