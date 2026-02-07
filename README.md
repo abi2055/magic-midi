@@ -74,10 +74,10 @@ npm start
 ## Web Run
 
 ### Option 1: Vercel hosted Web link (With Gemini Addition)
-[https://ghost-writer-app.vercel.app/]:https://ghost-writer-app.vercel.app/
+[https://ghost-writer-app.vercel.app/](https://ghost-writer-app.vercel.app/)
 
 ### Option 2: Original Web link (Without the Gemini Integration)
-[signalmidi.app]:https://signalmidi.app/
+[signalmidi.app](https://signalmidi.app/)
 
 ## License
 MIT. See [LICENSE](/LICENSE)
