@@ -72,6 +72,18 @@ http://localhost:3000/edit
 
 > **Note:** This project is currently optimized for vercel hosting however pull commit hash **17c8c1c** and the local setup above will work as intended
 
+### Deployment (Public Run)
+**This project is optimized for Vercel.**
+
+1. Push your code to a GitHub repository.
+2. Import the project into Vercel.
+3. Critical Step: In Vercel Project Settings > Environment Variables, add:
+   - Key: GEMINI_API_KEY
+   - Value: [Your Google AI Studio Key]
+4. Deploy
+
+> **Note**: The backend logic lives in api/generate.ts, which Vercel automatically detects and turns into a serverless function.
+
 ## Web Run
 
 ### Option 1: Vercel hosted Web link (With Gemini Addition)
