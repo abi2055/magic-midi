@@ -72,7 +72,7 @@ http://localhost:3000/edit
 
 > **Note:** This project is currently optimized for vercel hosting however pull commit hash **17c8c1c** and the local setup above will work as intended
 
-### Deployment (Public Run)
+## Deployment (Public Run)
 **This project is optimized for Vercel.**
 
 1. Push your code to a GitHub repository.
