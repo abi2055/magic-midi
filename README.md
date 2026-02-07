@@ -99,5 +99,13 @@ http://localhost:3000/edit
 
 ## Credits & Attribution
 
+* **Original MIDI Editor Core**
+    * This project is a fork of [Signal](https://github.com/ryohey/signal) by [Ryohey](https://github.com/ryohey).
+    * **License:** MIT. Huge thanks to the original author for the incredible piano roll UI and sequencer engine.
+
+* **AI Integration**
+    * Built by Abishek.
+    * Powered by Google Gemini API.
+
 ## License
 MIT. See [LICENSE](/LICENSE)
