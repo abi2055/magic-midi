@@ -95,7 +95,22 @@ http://localhost:3000/edit
 ### Option 2: Original Web link (Without the Gemini Integration)
 [signalmidi.app](https://signalmidi.app/)
 
-## Usage
+## Basic Usage Workflow
+
+1.  **Start the Editor**
+    Launch the application and navigate to the main editor interface. You will see a standard piano roll grid.
+
+2.  **Create Your Context**
+    Use the mouse to draw a simple melody or chord progression on the grid. This serves as the context for the AI. For the best results, try adding a simple drum pattern on a separate track to establish a rhythm.
+
+3.  **Trigger the Ghost Writer**
+    Locate the AI generation button in the toolbar. Click it to send your current notes to the Gemini model.
+
+4.  **Review the Suggestion**
+    The AI will generate a continuation of your track directly on the piano roll. It will also display a "Teacher's Insight" message that explains the music theory behind the specific notes it chose.
+
+5.  **Play and Edit**
+    Press the Play button to listen to the new composition. You can manually adjust, delete, or extend the generated notes to further refine the track.
 
 ## Credits & Attribution
 
@@ -104,7 +119,7 @@ http://localhost:3000/edit
     * **License:** MIT. Huge thanks to the original author for the incredible piano roll UI and sequencer engine.
 
 * **AI Integration**
-    * Built by Abishek.
+    * Built by @abi2055.
     * Powered by Google Gemini API.
 
 ## License
