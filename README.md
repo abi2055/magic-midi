@@ -95,5 +95,9 @@ http://localhost:3000/edit
 ### Option 2: Original Web link (Without the Gemini Integration)
 [signalmidi.app](https://signalmidi.app/)
 
+## Usage
+
+## Credits & Attribution
+
 ## License
 MIT. See [LICENSE](/LICENSE)
