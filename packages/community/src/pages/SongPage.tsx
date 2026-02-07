@@ -167,7 +167,7 @@ export const SongPage: FC<SongPageProps> = observer(({ songId }) => {
   return (
     <PageLayout>
       <Helmet>
-        <title>{`${song.name} - signal`}</title>
+        <title>{`${song.name} - Ghost Writer`}</title>
       </Helmet>
       <Header>
         <BigPlayButton isPlaying={isPlaying} onMouseDown={onClickPlay} />

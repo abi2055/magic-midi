@@ -76,7 +76,7 @@ export const UserPage: FC<UserPageProps> = observer(({ userId }) => {
   return (
     <PageLayout>
       <Helmet>
-        <title>{`${user.name} - signal`}</title>
+        <title>{`${user.name} - Ghost Writer`}</title>
       </Helmet>
       <PageTitle>{user.name}</PageTitle>
       <Bio>{user.bio}</Bio>
