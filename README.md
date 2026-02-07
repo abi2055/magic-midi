@@ -29,6 +29,8 @@ Follow these steps to run the "Ghost Writer" locally on your machine.
 ### 1. Prerequisites
 * Node.js (v18 or higher)
 * npm or yarn
+* Gemini 3 API Key
+* Firebase API Key
 
 ### 2. Clone 
 ```bash
