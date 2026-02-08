@@ -1,7 +1,7 @@
 # Ghost Writer: The AI Conductor
 
-> **A real-time AI music companion that jams with you.**
-> *Powered by Google Gemini 3 & Vercel Edge Functions.*
+> **Your AI co-pilot for music composition. It listens to your track in real-time and generates melodic continuations with built-in theory explanations.**
+> *Powered by Google Gemini 3*
 
 ## Overview
 Ghost Writer is an intelligent music editor that allows users to compose MIDI tracks in the browser. Unlike standard editors, this tool features a **"Ghost Writer"** which is an AI agent that listens to your current track, analyzes the harmony and rhythm of the other instruments (drums, bass, keys), and **instantly generates a continuation** of your melody. It acts as a **Music Theory Teacher** by explaining *why* it chose those notes (e.g., "I landed on the root note to resolve the tension").
@@ -107,7 +107,7 @@ http://localhost:3000/edit
     Locate the AI generation button in the toolbar. Click it to send your current notes to the Gemini model.
 
 4.  **Review the Suggestion**
-    The AI will generate a continuation of your track directly on the piano roll. It will also display a "Teacher's Insight" message that explains the music theory behind the specific notes it chose.
+    The AI will generate a continuation of your track directly on the piano roll. It will also display a "Insight" message that explains the music theory behind the specific notes it chose.
 
 5.  **Play and Edit**
     Press the Play button to listen to the new composition. You can manually adjust, delete, or extend the generated notes to further refine the track.
