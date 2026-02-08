@@ -5,8 +5,8 @@
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Click_Here-FF5722?style=for-the-badge&logo=google-cloud)](https://ghost-writer-app.vercel.app/)
 [![Video Demo](https://img.shields.io/badge/Video_Demo-Watch-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=AVSv6bKoV1M)
-[![Hackathon](https://img.shields.io/badge/Submission-Gemini_3_Hackathon-blue?style=flat)](https://devpost.com/software/ghost-writer-rqynp6)
-[![Google Gemini 3](https://img.shields.io/badge/AI-Google_Gemini-4285F4?style=flat&logo=google&logoColor=white)](https://aistudio.google.com/)
+[![Hackathon](https://img.shields.io/badge/Submission-Gemini_3_Hackathon-blue?style=for-the-badge)](https://devpost.com/software/ghost-writer-rqynp6)
+[![Google Gemini 3](https://img.shields.io/badge/AI-Google_Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com/)
 
 ## Overview
 Ghost Writer is an intelligent music editor that allows users to compose MIDI tracks in the browser. Unlike standard editors, this tool features a **"Ghost Writer"** which is an AI agent that listens to your current track, analyzes the harmony and rhythm of the other instruments (drums, bass, keys), and **instantly generates a continuation** of your melody. It acts as a **Music Theory Teacher** by explaining *why* it chose those notes (e.g., "I landed on the root note to resolve the tension").
