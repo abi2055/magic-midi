@@ -92,6 +92,8 @@ http://localhost:3000/edit
 
 > **Note**: The backend logic lives in api/generate.ts, which Vercel automatically detects and turns into a serverless function.
 
+> **Note**: Strict execution limits on Vercel's Hobby tier may cause initial timeouts (504s); a second attempt will succeed once the function is warm.
+
 ## Web Run
 
 ### Option 1: Vercel hosted Web link (With Gemini Addition)
